@@ -16,9 +16,9 @@ static GLuint texName;
 #define    checkImageWidth 64
 #define    checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
-GLuint _textgrass,_textsky;
+GLuint _textgrass,_textsky,_textbambu,_textroof;
 // TEXTURAS
-float px=0, py=1.0, pz=5, x1=0.0,y2=1.0,z1=0;
+float px=0, py=1.0, pz=20, x1=0.0,y2=1.0,z1=0;
 //funciones de texturizado
 void makeCheckImage(void)
 {
@@ -50,7 +50,15 @@ GLuint loadTexture(Image* image) {
 		image->pixels);               //The actual pixel data
 	return textureId; //Returns the id of the texture
 }
+void pisocasa() {
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
+	glTexCoord3f(0.0, 2.0, 0.0); glVertex3f(5, 0.0, 15);
+	glTexCoord3f(2.0, 2.0, 0.0); glVertex3f(5, 0.0, -15);
+	glTexCoord3f(2.0, 0.0, 0.0); glVertex3f(-5, 0.0, -15);
+	glEnd();
 
+}
 void piso() {
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.11); glVertex3f(-10, 0, 20);
@@ -64,10 +72,10 @@ void cielo() {
 	glRotatef(90, 0, 0, 1);
 	glTranslatef(0,-5,0);
 	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, 0);
-	glTexCoord3f(0.0, 1, 0.0); glVertex3f(5, 0, -0);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(5, 10, 0);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 10, 0);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, -20, -10);
+	glTexCoord3f(0.0, 1, 0.0); glVertex3f(10, -20, -10);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(10, 20, -10);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 20, -10);
 	glEnd();
 	glPopMatrix();
 	glPushMatrix();
@@ -110,6 +118,25 @@ void cargaCielo() {
 	glPopMatrix();
 
 }
+void cargaBambu() {
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, _textbambu);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBegin(GL_QUADS);
+	glEnd();
+	glPopMatrix();
+
+}
+void cargaRoof() {
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, _textroof);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBegin(GL_QUADS);
+	glEnd();
+	glPopMatrix();
+}
 void dibuja(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -125,7 +152,10 @@ void dibuja(void)
 	//textura de piso
 	cargaPasto();
 	piso();//piso
-
+	glPushMatrix();
+	cargaRoof();
+	pisocasa();
+	glPopMatrix();
 	/*EJES CORDENADOS   */
 	glBegin(GL_LINES);
 	glVertex3f(0, 0, 0);
@@ -176,11 +206,16 @@ void init(void)
 	glTexImage2D(GL_TEXTURE_2D, 0, 4, checkImageWidth, checkImageHeight,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 #endif
-
+	// carga de texturas
 	Image* image = loadBMP("grass.bmp");
 	_textgrass = loadTexture(image);
 	 image = loadBMP("sky.bmp");
     _textsky = loadTexture(image);
+	image = loadBMP("roof.bmp");
+	_textroof = loadTexture(image);
+	image = loadBMP("bambu.bmp");
+	_textbambu = loadTexture(image);
+
 
 	delete image;
 
