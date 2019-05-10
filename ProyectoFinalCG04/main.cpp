@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "imageloader.hpp"
+#include "cmodel/CModel.h"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -7,7 +8,10 @@
 #include <stdlib.h>
 #include <string>
 #include <time.h>
-#include <math.h>
+#include <math.h>	
+#include <Windows.h>
+
+
 // VARIABLE GLOBALES
 #ifdef GL_VERSION_1_1
 static GLuint texName;
@@ -17,9 +21,11 @@ static GLuint texName;
 #define    checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 GLuint _textgrass,_textsky,_textbambu,_textroof;
+float camina_x = 0, camina_z = 0;
 // TEXTURAS
 float px=0, py=1.0, pz=20, x1=0.0,y2=1.0,z1=0;
 //funciones de texturizado
+
 void makeCheckImage(void)
 {
 	int i, j, c;
@@ -50,55 +56,8 @@ GLuint loadTexture(Image* image) {
 		image->pixels);               //The actual pixel data
 	return textureId; //Returns the id of the texture
 }
-void pisocasa() {
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
-	glTexCoord3f(0.0, 2.0, 0.0); glVertex3f(5, 0.0, 15);
-	glTexCoord3f(2.0, 2.0, 0.0); glVertex3f(5, 0.0, -15);
-	glTexCoord3f(2.0, 0.0, 0.0); glVertex3f(-5, 0.0, -15);
-	glEnd();
-
-}
-void piso() {
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.11); glVertex3f(-10, 0, 20);
-	glTexCoord3f(0.0, 1, 0.1); glVertex3f(10,0,20);
-	glTexCoord3f(1.0, 1.0, 0.1); glVertex3f(10,0,-20);
-	glTexCoord3f(1.0, 0.0, 0.1); glVertex3f(-10,0,-20);
-	glEnd();
-}
-void cielo() {
-	glPushMatrix();
-	glRotatef(90, 0, 0, 1);
-	glTranslatef(0,-5,0);
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, -20, -10);
-	glTexCoord3f(0.0, 1, 0.0); glVertex3f(10, -20, -10);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(10, 20, -10);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 20, -10);
-	glEnd();
-	glPopMatrix();
-	glPushMatrix();
-	glRotatef(-90, 1, 0, 0);
-	glTranslatef(0, 0, 0);
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-10, -10, 0);
-	glTexCoord3f(0.0, 1, 0.0); glVertex3f(-10, -10, 10);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-10, 10, 10);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-10, 10, 0);
-	glEnd();
-	glPopMatrix();
-	glPushMatrix();
-	glRotatef(-90, 1, 0, 0);
-	glTranslatef(0, 0, 0);
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(10, -10, 0);
-	glTexCoord3f(0.0, 1, 0.0); glVertex3f(10, -10, 10);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(10, 10, 10);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(10, 10, 0);
-	glEnd();
-	glPopMatrix();
-}
+// OBJ 3D
+// carga de texturas
 void cargaPasto() {
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, _textgrass);
@@ -137,6 +96,117 @@ void cargaRoof() {
 	glEnd();
 	glPopMatrix();
 }
+//dibujo
+void pisocasa() {
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
+	glTexCoord3f(0.0, 2.0, 0.0); glVertex3f(5, 0.0, 15);
+	glTexCoord3f(2.0, 2.0, 0.0); glVertex3f(5, 0.0, -15);
+	glTexCoord3f(2.0, 0.0, 0.0); glVertex3f(-5, 0.0, -15);
+	glEnd();
+
+}
+void dibujacuarto() {
+	//pared1
+	cargaBambu();
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 15);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
+	glEnd();
+	//pared2
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(5, 0.0, 15);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(5, 2.0, 15);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 0);
+	glEnd();
+	//fachada1
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 15);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 15);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 15);
+	glEnd();
+	//fachada2
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 1.5, 15);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-5, 2.0, 15);
+	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 15);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 15);
+	glEnd();
+	//fachada3
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-3, 0.0, 15);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 15);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 15);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 15);
+	glEnd();
+	//fachada4
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-3, 0.0, 0);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 0);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 0);
+	glEnd();
+	//fachada5
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 0);
+	glEnd();
+	//fachada6
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 1.5, 0);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-5, 2.0, 0);
+	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 0);
+	glEnd();
+}
+void piso() {
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.11); glVertex3f(-10, 0, 20);
+	glTexCoord3f(0.0, 1, 0.1); glVertex3f(10,0,20);
+	glTexCoord3f(1.0, 1.0, 0.1); glVertex3f(10,0,-20);
+	glTexCoord3f(1.0, 0.0, 0.1); glVertex3f(-10,0,-20);
+	glEnd();
+}
+
+void cielo() {
+	glPushMatrix();
+	glRotatef(90, 0, 0, 1);
+	glTranslatef(0,-5,0);
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, -20, -10);
+	glTexCoord3f(0.0, 1, 0.0); glVertex3f(10, -20, -10);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(10, 20, -10);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 20, -10);
+	glEnd();
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(-90, 1, 0, 0);
+	glTranslatef(0, 0, 0);
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-10, -10, 0);
+	glTexCoord3f(0.0, 1, 0.0); glVertex3f(-10, -10, 10);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-10, 10, 10);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-10, 10, 0);
+	glEnd();
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(-90, 1, 0, 0);
+	glTranslatef(0, 0, 0);
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(10, -10, 0);
+	glTexCoord3f(0.0, 1, 0.0); glVertex3f(10, -10, 10);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(10, 10, 10);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(10, 10, 0);
+	glEnd();
+	glPopMatrix();
+}
+
 void dibuja(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -146,8 +216,9 @@ void dibuja(void)
 	/* viewing transformation  */
 	gluLookAt(px, py, pz, x1, y2, z1, 0.0, 1.0, 0.0);
 	glScalef(1.0, 2.0, 1.0);      /* modeling transformation */
-	cargaCielo();
-	cielo();
+	//cargaCielo();
+	//cielo()
+	glTranslatef(camina_x, 0, camina_z);
 	glPushMatrix();
 	//textura de piso
 	cargaPasto();
@@ -155,6 +226,12 @@ void dibuja(void)
 	glPushMatrix();
 	cargaRoof();
 	pisocasa();
+	//cuarto1
+	glPushMatrix();
+	dibujacuarto();
+	glPopMatrix();
+	//cuarto2
+
 	glPopMatrix();
 	/*EJES CORDENADOS   */
 	glBegin(GL_LINES);
@@ -224,6 +301,22 @@ void init(void)
 void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
+	case 'j':
+		camina_x += 0.1;
+		glutPostRedisplay();
+		break;
+	case 'l':
+		camina_x -= 0.1;
+		glutPostRedisplay();
+		break;
+	case 'i':
+		camina_z += 0.1;
+		glutPostRedisplay();
+		break;
+	case 'k':
+		camina_z -= 0.1;
+		glutPostRedisplay();
+		break;
 	case 'a':
 		x1 -= 0.5;
 		glutPostRedisplay();
