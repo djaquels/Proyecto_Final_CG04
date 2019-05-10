@@ -1,6 +1,3 @@
-#include "Main.h"
-#include "imageloader.hpp"
-#include "cmodel/CModel.h"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -10,8 +7,15 @@
 #include <time.h>
 #include <math.h>	
 #include <Windows.h>
+#include "Main.h"
+#include "imageloader.hpp"
+#include "cmodel/CModel.h"
+#include "texture.h"
+#include "figuras.h"
 
-
+#if (_MSC_VER >= 1900)
+#   pragma comment( lib, "legacy_stdio_definitions.lib" )
+#endif
 // VARIABLE GLOBALES
 #ifdef GL_VERSION_1_1
 static GLuint texName;
@@ -21,6 +25,7 @@ static GLuint texName;
 #define    checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 GLuint _textgrass,_textsky,_textbambu,_textroof;
+CModel table_and_chairs;
 float camina_x = 0, camina_z = 0;
 // TEXTURAS
 float px=0, py=1.0, pz=20, x1=0.0,y2=1.0,z1=0;
@@ -164,6 +169,7 @@ void dibujacuarto() {
 	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 0);
 	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 0);
 	glEnd();
+
 }
 void piso() {
 	glBegin(GL_QUADS);
@@ -218,17 +224,19 @@ void dibuja(void)
 	glScalef(1.0, 2.0, 1.0);      /* modeling transformation */
 	//cargaCielo();
 	//cielo()
+	//glNormal3f(0,0,15);
+	table_and_chairs.GLrender(NULL, _SHADED, 1.0);
 	glTranslatef(camina_x, 0, camina_z);
 	glPushMatrix();
 	//textura de piso
 	cargaPasto();
-	piso();//piso
+	//piso();//piso
 	glPushMatrix();
 	cargaRoof();
-	pisocasa();
+	//pisocasa();
 	//cuarto1
 	glPushMatrix();
-	dibujacuarto();
+	//dibujacuarto();
 	glPopMatrix();
 	//cuarto2
 
@@ -295,6 +303,7 @@ void init(void)
 
 
 	delete image;
+	table_and_chairs._3dsLoad("Table.3ds");
 
 }
 
