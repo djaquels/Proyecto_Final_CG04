@@ -24,11 +24,12 @@ static GLuint texName;
 #define    checkImageWidth 64
 #define    checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
-GLuint _textgrass,_textsky,_textbambu,_textroof;
-CModel table_and_chairs;
+GLuint _textgrass,_textsky,_textbambu,_textroof,_textporta;
+CModel table_and_chairs,milk,kitchen;
+CTexture lechi;
 float camina_x = 0, camina_z = 0;
 // TEXTURAS
-float px=0, py=1.0, pz=20, x1=0.0,y2=1.0,z1=0;
+float px=0, py=1.0, pz=15.0, x1=0.0,y2=1.0,z1=0;
 //funciones de texturizado
 
 void makeCheckImage(void)
@@ -101,53 +102,28 @@ void cargaRoof() {
 	glEnd();
 	glPopMatrix();
 }
+void cargaDoor() {
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, _textporta);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBegin(GL_QUADS);
+	glEnd();
+	glPopMatrix();
+}
 //dibujo
 void pisocasa() {
 	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
-	glTexCoord3f(0.0, 2.0, 0.0); glVertex3f(5, 0.0, 15);
-	glTexCoord3f(2.0, 2.0, 0.0); glVertex3f(5, 0.0, -15);
-	glTexCoord3f(2.0, 0.0, 0.0); glVertex3f(-5, 0.0, -15);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 8);
+	glTexCoord3f(0.0, 2.0, 0.0); glVertex3f(5, 0.0, 8);
+	glTexCoord3f(2.0, 2.0, 0.0); glVertex3f(5, 0.0, -8);
+	glTexCoord3f(2.0, 0.0, 0.0); glVertex3f(-5, 0.0, -8);
 	glEnd();
 
 }
 void dibujacuarto() {
 	//pared1
 	cargaBambu();
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
-	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 15);
-	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
-	glEnd();
-	//pared2
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(5, 0.0, 15);
-	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(5, 2.0, 15);
-	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 0);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 0);
-	glEnd();
-	//fachada1
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 15);
-	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 15);
-	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 15);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 15);
-	glEnd();
-	//fachada2
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 1.5, 15);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-5, 2.0, 15);
-	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 15);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 15);
-	glEnd();
-	//fachada3
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-3, 0.0, 15);
-	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 15);
-	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 15);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 15);
-	glEnd();
 	//fachada4
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-3, 0.0, 0);
@@ -159,8 +135,8 @@ void dibujacuarto() {
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
-	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 0);
-	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 0);
+	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 0);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 0);
 	glEnd();
 	//fachada6
 	glBegin(GL_QUADS);
@@ -169,14 +145,73 @@ void dibujacuarto() {
 	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 0);
 	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 0);
 	glEnd();
-
+	//pared1
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 8);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 8);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
+	glEnd();
+	//pared2
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(5, 0.0, 8);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(5, 2.0, 8);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 0);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 0);
+	glEnd();
+	glPushMatrix();
+	glTranslatef(0, 0, 5);
+	glEnable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glTranslatef(0.1,0.2,-0.3);
+	milk.GLrender(NULL, _SHADED, 1.0);
+	glPopMatrix();
+	table_and_chairs.GLrender(NULL, _SHADED, 1.0);
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(90,0,1,0);
+	glScalef(0.5,0.5,1);
+	glTranslatef(-8.5,0,0);
+	kitchen.GLrender(NULL, _SHADED, 1.0);
+	glPopMatrix();
+	cargaBambu();
+	
+	//fachada1
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 8);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 8);
+	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 8);
+	glEnd();
+	//fachada2
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 1.5, 8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-5, 2.0, 8);
+	glTexCoord3f(8.0, 1.0, 0.0); glVertex3f(5, 2.0, 8);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 1.5, 8);
+	glEnd();
+	//fachada3
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-3, 0.0, 8);
+	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 8);
+	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 8);
+	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 8);
+	glEnd();
+	//puerta1
+	cargaDoor();
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-4.5, 0, 8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-4.5,1.5, 8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-3.0, 1.5, 8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-3.0, 0, 8);
+	glEnd();
 }
 void piso() {
 	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.11); glVertex3f(-10, 0, 20);
-	glTexCoord3f(0.0, 1, 0.1); glVertex3f(10,0,20);
-	glTexCoord3f(1.0, 1.0, 0.1); glVertex3f(10,0,-20);
-	glTexCoord3f(1.0, 0.0, 0.1); glVertex3f(-10,0,-20);
+	glTexCoord3f(0.0, 0.0, 0.11); glVertex3f(-10, 0, 15);
+	glTexCoord3f(0.0, 1, 0.1); glVertex3f(10,0,15);
+	glTexCoord3f(1.0, 1.0, 0.1); glVertex3f(10,0,-15);
+	glTexCoord3f(1.0, 0.0, 0.1); glVertex3f(-10,0,-15);
 	glEnd();
 }
 
@@ -224,19 +259,18 @@ void dibuja(void)
 	glScalef(1.0, 2.0, 1.0);      /* modeling transformation */
 	//cargaCielo();
 	//cielo()
-	//glNormal3f(0,0,15);
-	table_and_chairs.GLrender(NULL, _SHADED, 1.0);
+
 	glTranslatef(camina_x, 0, camina_z);
 	glPushMatrix();
 	//textura de piso
 	cargaPasto();
-	//piso();//piso
+	piso();//piso
 	glPushMatrix();
 	cargaRoof();
-	//pisocasa();
+	pisocasa();
 	//cuarto1
 	glPushMatrix();
-	//dibujacuarto();
+	dibujacuarto();
 	glPopMatrix();
 	//cuarto2
 
@@ -300,10 +334,23 @@ void init(void)
 	_textroof = loadTexture(image);
 	image = loadBMP("bambu.bmp");
 	_textbambu = loadTexture(image);
+	image = loadBMP("door.bmp");
+	_textporta= loadTexture(image);
 
 
 	delete image;
-	table_and_chairs._3dsLoad("Table.3ds");
+	table_and_chairs._3dsLoad("modelos/Table.3ds");
+	table_and_chairs.LoadTextureImages();
+	table_and_chairs.GLIniTextures();
+	table_and_chairs.ReleaseTextureImages();
+	milk._3dsLoad("modelos/milk.3ds");
+	milk.LoadTextureImages();
+	milk.GLIniTextures();
+	milk.ReleaseTextureImages();
+	kitchen._3dsLoad("modelos/Kitchen.3ds");
+	kitchen.LoadTextureImages();
+	kitchen.GLIniTextures();
+	kitchen.ReleaseTextureImages();
 
 }
 
