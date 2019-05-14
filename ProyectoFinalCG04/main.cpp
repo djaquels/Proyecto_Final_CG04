@@ -29,7 +29,10 @@ CModel table_and_chairs,milk,kitchen;
 CTexture lechi;
 float camina_x = 0, camina_z = 0;
 // TEXTURAS
-float px=0, py=1.0, pz=15.0, x1=0.0,y2=1.0,z1=0;
+float px = 0, py = 1.0, pz = 15.0, x1 = 0.0, y2 = 1.0, z1 = 0;
+float puerta_z = -8;
+float puerta_x = 0;
+float angulo_leche = 0;
 //funciones de texturizado
 
 void makeCheckImage(void)
@@ -163,20 +166,22 @@ void dibujacuarto() {
 	glTranslatef(0, 0, 5);
 	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
-	glTranslatef(0.1,0.2,-0.3);
+	glTranslatef(0.1, 0.2, -0.3);
+	glRotatef(angulo_leche,0,0,1);
 	milk.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
 	table_and_chairs.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
+	//cocina economica
 	glPushMatrix();
-	glRotatef(90,0,1,0);
-	glScalef(0.5,0.5,1);
-	glTranslatef(-8.5,0,0);
+	glRotatef(90, 0, 1, 0);
+	glScalef(0.5, 0.5, 1);
+	glTranslatef(-8.5, 0, 0);
 	kitchen.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
-	cargaBambu();
-	
+	//puerta door
 	//fachada1
+	cargaBambu();
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 8);
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 8);
@@ -196,14 +201,6 @@ void dibujacuarto() {
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 8);
 	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 8);
 	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 8);
-	glEnd();
-	//puerta1
-	cargaDoor();
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-4.5, 0, 8);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-4.5,1.5, 8);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-3.0, 1.5, 8);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-3.0, 0, 8);
 	glEnd();
 }
 void piso() {
@@ -353,6 +350,17 @@ void init(void)
 	kitchen.ReleaseTextureImages();
 
 }
+bool animacion1 = false,animacion2 = false;
+void animaciones() {
+	if (animacion1) {
+		
+	}
+	if (animacion2 && angulo_leche < 90) {
+		angulo_leche += 0.5;
+		glutPostRedisplay();
+		
+	}
+}
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -376,11 +384,11 @@ void keyboard(unsigned char key, int x, int y)
 	case 'a':
 		x1 -= 0.5;
 		glutPostRedisplay();
-	break;
+		break;
 	case 'A':
 		x1 += 0.5;
 		glutPostRedisplay();
-	break;
+		break;
 	case 'd':
 		y2 -= 0.5;
 		glutPostRedisplay();
@@ -413,6 +421,15 @@ void keyboard(unsigned char key, int x, int y)
 		pz += 0.5;
 		glutPostRedisplay();
 		break;
+	case 't':
+		animacion2 = true;
+		glutIdleFunc(animaciones);
+		break;
+	case 'q':
+		puerta_x -= 1;
+		glutPostRedisplay();
+		break;
+
 	}
 }
 
