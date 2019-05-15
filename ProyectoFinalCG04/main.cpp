@@ -24,9 +24,8 @@ static GLuint texName;
 #define    checkImageWidth 64
 #define    checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
-GLuint _textgrass,_textsky,_textbambu,_textroof,_textporta;
-CModel table_and_chairs,milk,kitchen;
-CTexture lechi;
+GLuint _textgrass,_textsky,_textbambu,_textroof,_textporta, _textwindow, _textwj;
+CModel table_and_chairs,milk,kitchen,door;
 float camina_x = 0, camina_z = 0;
 // TEXTURAS
 float px = 0, py = 1.0, pz = 15.0, x1 = 0.0, y2 = 1.0, z1 = 0;
@@ -86,6 +85,16 @@ void cargaCielo() {
 	glPopMatrix();
 
 }
+void cargaWindow() {
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, _textwindow);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBegin(GL_QUADS);
+	glEnd();
+	glPopMatrix();
+
+}
 void cargaBambu() {
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, _textbambu);
@@ -138,8 +147,8 @@ void dibujacuarto() {
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 0);
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 0);
-	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 0);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 0);
+	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.2, 2.0, 0);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.2, 0.0, 0);
 	glEnd();
 	//fachada6
 	glBegin(GL_QUADS);
@@ -171,22 +180,25 @@ void dibujacuarto() {
 	milk.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
 	table_and_chairs.GLrender(NULL, _SHADED, 1.0);
+	glPushMatrix();
+	glTranslatef(-3.5, 0, 3);
+	glPushMatrix();
+	glScalef(2, 1, 1);
+	glTranslatef(0.4,0,0);
+	glRotatef(puerta_x, 0, 1, 0);
+	glTranslatef(-0.4,0,0);
+	door.GLrender(NULL, _SHADED, 0.8);
+	glPopMatrix();
+	glPopMatrix();
 	glPopMatrix();
 	//cocina economica
-	glPushMatrix();
-	glRotatef(90, 0, 1, 0);
-	glScalef(0.5, 0.5, 1);
-	glTranslatef(-8.5, 0, 0);
-	kitchen.GLrender(NULL, _SHADED, 1.0);
-	glPopMatrix();
-	//puerta door
 	//fachada1
 	cargaBambu();
 	glBegin(GL_QUADS);
 	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-5, 0.0, 8);
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-5, 2.0, 8);
-	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.5, 2.0, 8);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.5, 0.0, 8);
+	glTexCoord3f(1.0, 4.0, 0.0); glVertex3f(-4.2, 2.0, 8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-4.2, 0.0, 8);
 	glEnd();
 	//fachada2
 	glBegin(GL_QUADS);
@@ -201,6 +213,21 @@ void dibujacuarto() {
 	glTexCoord3f(0.0, 4.0, 0.0); glVertex3f(-3, 2.0, 8);
 	glTexCoord3f(8.0, 4.0, 0.0); glVertex3f(5, 2.0, 8);
 	glTexCoord3f(8.0, 0.0, 0.0); glVertex3f(5, 0.0, 8);
+	glEnd();
+	// ventanas
+	cargaWindow();
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-2, 0.7, 8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-2, 1.5, 8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-1, 1.5, 8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-1, 0.7, 8);
+	glEnd();
+	//window 2
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(1, 0.7, 8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(1, 1.5, 8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(2, 1.5, 8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(2, 0.7, 8);
 	glEnd();
 }
 void piso() {
@@ -333,6 +360,10 @@ void init(void)
 	_textbambu = loadTexture(image);
 	image = loadBMP("door.bmp");
 	_textporta= loadTexture(image);
+	image = loadBMP("window.bmp");
+	_textwindow = loadTexture(image);
+	//image = loadBMP("wj.bmp");
+	//_textwj = loadTexture(image);
 
 
 	delete image;
@@ -348,15 +379,25 @@ void init(void)
 	kitchen.LoadTextureImages();
 	kitchen.GLIniTextures();
 	kitchen.ReleaseTextureImages();
+	door._3dsLoad("modelos/door.3ds");
+	door.LoadTextureImages();
+	door.GLIniTextures();
+	door.ReleaseTextureImages();
 
 }
 bool animacion1 = false,animacion2 = false;
+bool animacion1a = false;
 void animaciones() {
-	if (animacion1) {
-		
+	if (animacion1 && puerta_x >= -65) {
+		puerta_x -= 1;
+		glutPostRedisplay();
+	}
+	if (animacion1a && puerta_x <= 0) {
+		puerta_x += 1;
+		glutPostRedisplay();
 	}
 	if (animacion2 && angulo_leche < 90) {
-		angulo_leche += 0.5;
+		angulo_leche += 1;
 		glutPostRedisplay();
 		
 	}
@@ -425,9 +466,15 @@ void keyboard(unsigned char key, int x, int y)
 		animacion2 = true;
 		glutIdleFunc(animaciones);
 		break;
+	case 'Q':
+		animacion1a = true;
+		animacion1 = false;
+		glutIdleFunc(animaciones);
+		break;
 	case 'q':
-		puerta_x -= 1;
-		glutPostRedisplay();
+		animacion1 = true;
+		animacion1a = false;
+		glutIdleFunc(animaciones);
 		break;
 
 	}
