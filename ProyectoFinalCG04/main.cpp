@@ -170,62 +170,59 @@ void recamara() {
 	cargaWindow();
 
 	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(-1, 0.5, -8);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-2.7, 0.5, -8);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-2.7, 1.4, -8);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(-1, 1.4, -8);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(2.7, 0.0, -8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(-2.7, 0.0, -8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(-2.7, 1.8, -8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(2.7, 1.8, -8);
 	glEnd();
+	// Buro de credito
+	glPushMatrix();
+	glTranslatef(2, 0, 0);
+	cargaRedWood();
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, -7);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -7);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -7);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, -7);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, -8);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, -8);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, -7);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 0, -8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(0, 1, -8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, -7);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(1, 0, -7);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -8);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -8);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(1, 1, -7);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(1, 0, -7);
+	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -7);
+	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -7);
+	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(1, 1, -7);
+	glEnd();
+	glPopMatrix();
 	//camita bonita
 	glPushMatrix();
 	glTranslatef(0, 0, -3);
 	bed.GLrender(NULL, _SHADED, 0.8);
 	glPopMatrix();
-	// Buro de credito
-	cargaRedWood();
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, 0);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, 0);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, 0);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, 0);
-	glEnd();
-
-
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, -1);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -1);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -1);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, -1);
-	glEnd();
-
-
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0, 0, 0);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(0, 0, -1);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(0, 1, -1);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0, 1, 0);
-	glEnd();
-
-
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(1, 0, 0);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -1);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -1);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(1, 1, 0);
-	glEnd();
-
-
-	glBegin(GL_QUADS);
-	glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(1, 0, -1);
-	glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(1, 0, -1);
-	glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(1, 1, -1);
-	glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(1, 1, -1);
-	glEnd();
-
-
-	
-
-
-
 
 }
 void dibujacuarto() {
